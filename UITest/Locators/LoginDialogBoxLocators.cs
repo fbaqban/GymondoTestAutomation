@@ -22,7 +22,7 @@ namespace UITest.Locators
         public static IWebElement FinalLogInButton(IWebDriver driver)
         {
             return driver.FindElement(By
-                .XPath("//button[@class='btn-gym btn--flex btn--disabled btn--fluid']"));
+                .XPath("//button[@class='btn-gym btn--flex btn--fluid']"));
         }
 
         //wait section
