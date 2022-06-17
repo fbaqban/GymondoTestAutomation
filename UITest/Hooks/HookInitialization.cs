@@ -10,6 +10,9 @@ namespace UITest.Hooks
     {
         public static IWebDriver driver;
         private readonly ScenarioContext _scenarioContext;
+        private bool DialogBoxTitle;
+        private bool DialogBoxDescription;
+        private bool PausedProgramLable;
 
         public HookInitialization(ScenarioContext scenarioContext) => _scenarioContext = scenarioContext;
 
@@ -37,6 +40,21 @@ namespace UITest.Hooks
         }
 
         [BeforeScenario(Order = 2)]
+        public void ClickAcceptCookiesButton()
+        {
+            //The user clicks on the first log in button in order to open the login form
+            try
+            {
+                    Locators.MainPageLocators.AcceptCookiesButton(driver).Click();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception("The LOG IN button does not found!");
+            }
+        }
+
+        [BeforeScenario(Order = 3)]
         public void ClickFirstSignInButton()
         {
             //The user clicks on the first log in button in order to open the login form
@@ -52,15 +70,12 @@ namespace UITest.Hooks
             }
         }
 
-        [BeforeScenario(Order = 3)]
+        [BeforeScenario(Order = 4)]
         public void EnterLoginData()
         {
             //The user login with given username and password
             try
             {
-                //wait
-                Locators.LoginDialogBoxLocators.WaitForLogInDialogBox(driver);
-                
                 //insert user and password
                 Locators.LoginDialogBoxLocators.Username(driver).SendKeys("qa-prod1@gymondo.de");
                 Locators.LoginDialogBoxLocators.Password(driver).SendKeys("purpleSquid22!");
@@ -72,8 +87,8 @@ namespace UITest.Hooks
             }
         }
 
-        [BeforeScenario(Order = 4)]
-        public void ClickFinalLogInbutton()
+        [BeforeScenario(Order = 5)]
+        public void ClickFinalLogInButton()
         {
             //The user log in
             try
@@ -87,10 +102,41 @@ namespace UITest.Hooks
             }
         }
 
-        [BeforeScenario(Order = 5)]
+        [BeforeScenario(Order = 6)]
+        public void WaitForGotNewsDialogToBeDisplayed()
+        {
+            //The user wait for the got news dialog box after login
+            try
+            {
+                //wait
+                Locators.MainPageLocators.WaitForGotNewsDialogBox(driver);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception("Home page is not displayed!");
+            }
+        }
+
+        [BeforeScenario(Order = 7)]
+        public void ClickGotNewsButton()
+        {
+            //The user accept got news
+            try
+            {
+                Locators.MainPageLocators.GotNewsButton(driver).Click();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception("Cannot accept got news button!");
+            }
+        }
+
+        [BeforeScenario(Order = 8)]
         public void WaitForHomePageToBeDisplayed()
         {
-            //The user wait for the home page after login
+            //The user wait for the home page after accept got news
             try
             {
                 //wait
@@ -100,6 +146,62 @@ namespace UITest.Hooks
             {
                 Console.WriteLine(e);
                 throw new Exception("Home page is not displayed!");
+            }
+        }
+
+        [BeforeScenario(Order = 9)]
+        public void ChangeStatusFromResumeToPause()
+        {
+            string xpathPauseLable = "//div[@class='progress-circle__description']/div[contains(text(),'Paused')]";
+
+            //The user resume the program 
+            try
+            {
+                if (driver.FindElements(By.XPath(xpathPauseLable)).Count!=0)
+                {
+
+                Locators.MyPlanTimelineLocators.PlanSettingsButton(Hooks.HookInitialization.driver).Click();
+
+                //wait
+                Locators.FatBurnerBeginnerDialoBoxLocators.WaitForFatBurnerDialogBox(Hooks.HookInitialization.driver);
+
+                //check elements
+                DialogBoxTitle = Locators.FatBurnerBeginnerDialoBoxLocators
+                   .FatBurnerDialogBoxTitle(Hooks.HookInitialization.driver).Displayed;
+
+                DialogBoxDescription = Locators.FatBurnerBeginnerDialoBoxLocators
+                    .FatBurnerDialogBoxDescription(Hooks.HookInitialization.driver).Displayed;
+                //click on resume button
+                Locators.FatBurnerBeginnerDialoBoxLocators
+                    .ResumeProgramButton(Hooks.HookInitialization.driver).Click();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception("Previous public spaces could not remove!");
+            }
+        }
+
+
+        [AfterScenario]
+        public void AfterScenario()
+        {
+            try
+            {
+                //logout
+                Locators.MyPlanTimelineLocators.UserProfileMenu(driver).Click();
+
+                Locators.MyPlanTimelineLocators.LogOutItem(driver).Click();
+
+                //quit browser
+                Console.WriteLine("Selenium webdriver quit");
+                _scenarioContext.Get<IWebDriver>("WebDriver").Quit();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception("Test closure has problem!");
             }
         }
 
