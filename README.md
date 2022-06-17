@@ -6,8 +6,13 @@ Welcome Dear Developers, This is where you will find End-To-End where you are fr
 You can contribute by giving your scripts written in C# and you think are amazing for other people to see.
 
 1- You can find the test scenarios as attachments.
+   
+  - Gymondo-TS00005.pdf : Pause a program test scenario 
+  - Gymondo-TS00005.pdf : resume a program test scenario 
+  - Gymondo-TS00005.pdf : end a program test scenario 
 
 2- The automation test project is to pause and then resume the user plan.
+
 ## Instructions
 1- Clone this Repository in Visual Studio or any code editor
 
