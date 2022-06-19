@@ -160,20 +160,32 @@ namespace UITest.Hooks
                 if (driver.FindElements(By.XPath(xpathPauseLable)).Count!=0)
                 {
 
-                Locators.MyPlanTimelineLocators.PlanSettingsButton(Hooks.HookInitialization.driver).Click();
+                Locators.MyPlanTimelineLocators.PlanSettingsButton(driver).Click();
 
                 //wait
-                Locators.FatBurnerBeginnerDialoBoxLocators.WaitForFatBurnerDialogBox(Hooks.HookInitialization.driver);
+                Locators.FatBurnerBeginnerDialoBoxLocators.WaitForFatBurnerDialogBox(driver);
 
                 //check elements
                 DialogBoxTitle = Locators.FatBurnerBeginnerDialoBoxLocators
-                   .FatBurnerDialogBoxTitle(Hooks.HookInitialization.driver).Displayed;
+                   .FatBurnerDialogBoxTitle(driver).Displayed;
+
+                    //fat burner dialog box title css assertion
+                    Assert.Equal("rgba(240, 117, 128, 1)", Locators.FatBurnerBeginnerDialoBoxLocators
+                        .FatBurnerDialogBoxTitle(driver).GetCssValue("color"));
 
                 DialogBoxDescription = Locators.FatBurnerBeginnerDialoBoxLocators
-                    .FatBurnerDialogBoxDescription(Hooks.HookInitialization.driver).Displayed;
+                    .FatBurnerDialogBoxDescription(driver).Displayed;
+
+                    //resume button css assertion
+                    Assert.Equal("rgba(85, 85, 85, 1)", Locators.FatBurnerBeginnerDialoBoxLocators
+                        .ResumeProgramButton(driver).GetCssValue("color"));
+
+                    Assert.Equal("rgba(0, 0, 0, 0)", Locators.FatBurnerBeginnerDialoBoxLocators
+                        .ResumeProgramButton(driver).GetCssValue("background-color"));
+
                 //click on resume button
                 Locators.FatBurnerBeginnerDialoBoxLocators
-                    .ResumeProgramButton(Hooks.HookInitialization.driver).Click();
+                    .ResumeProgramButton(driver).Click();
                 }
             }
             catch (Exception e)
