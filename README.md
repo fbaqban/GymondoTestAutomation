@@ -8,8 +8,8 @@ You can contribute by giving your scripts written in C# and you think are amazin
 1- You can find the test scenarios as attachments.
    
   - Gymondo-TS00005.pdf : Pause a program test scenario 
-  - Gymondo-TS00006.pdf : resume a program test scenario 
-  - Gymondo-TS00007.pdf : end a program test scenario 
+  - Gymondo-TS00006.pdf : Resume a program test scenario 
+  - Gymondo-TS00007.pdf : End a program test scenario 
 
 2- The automation test project is to pause and then resume the user plan.
 
